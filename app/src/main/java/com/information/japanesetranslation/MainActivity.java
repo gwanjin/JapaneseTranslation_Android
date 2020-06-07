@@ -10,28 +10,38 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
 public class MainActivity extends AppCompatActivity {
-    Context mContext;
+    private Unbinder mUnbinder;
+
+    @BindView(R.id.sentence)
+    EditText mEditTextView;
+    @BindView(R.id.result)
     TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mContext = this;
-        final EditText sentence = findViewById(R.id.sentence);
-        mTextView = findViewById(R.id.result);
+        mUnbinder = ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mUnbinder!=null)
+            mUnbinder.unbind();
+    }
+
+    @OnClick(R.id.button)
+    void click() {
+        RequestHttpURLConnection conn = new RequestHttpURLConnection(mTextView);
+        conn.sendRequest(mEditTextView.getText().toString());
         final InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
-        Button button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RequestHttpURLConnection conn = new RequestHttpURLConnection(mTextView);
-                conn.execute(sentence.getText().toString());
-                imm.hideSoftInputFromWindow(sentence.getWindowToken(), 0);
-            }
-        });
-
+        imm.hideSoftInputFromWindow(mEditTextView.getWindowToken(), 0);
     }
 }
