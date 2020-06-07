@@ -29,7 +29,7 @@ import java.util.Map;
 
 
 public class RequestHttpURLConnection {
-    private final String APP_ID = "4f56ea900af09f5971fea3992be8722677f57cad72a5dffdd72e4006e4bf59a7";
+    private final String APP_ID = "";
     static final String GOO_URL = "https://labs.goo.ne.jp/api/hiragana";
     TextView mResultView;
 
